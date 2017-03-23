@@ -19,6 +19,7 @@ Run in a http server. Try play with the following params:
 | -------- | -------- | -------- | ----------- |
 | agent    | yes      |          | Request origin. Only 'MgExf' and 'ExfNw' is allowed. |
 | provider | no       | 'google' | Map service provider. Can be one of the following: ['google', 'google_cn', 'baidu', 'amap', 'yandex', 'osm', 'mapbox', 'carto', 'esri', 'wikimedia']. |
+| lang     | no       |          | Set the map language, if applicable. Only Google, Amap, and Yandex provide multi-language support so far. |
 | lat      | no       | 0        | Default latitude. |
 | lng      | no       | 0        | Default longitude. |
 | zoom     | no       | 4        | Default zoom level. |
