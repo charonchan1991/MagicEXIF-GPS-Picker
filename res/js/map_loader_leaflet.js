@@ -7,7 +7,7 @@ var mapMarker;
 
 function initializeMap(provider) {
 
-    var defPos = [mapLatLng.lat, mapLatLng.lng];
+    var defPos = mapLatLng;
     map = L.map('mapUICanvas', {
         zoomControl: false
     }).setView(defPos, mapZoom);
@@ -91,7 +91,20 @@ function initializeMap(provider) {
         draggable: mapAllowEdit
     }).addTo(map);
 
-    //
+    // Define custom tools
+    var customTools = L.Control.extend({
+        options: {
+            position: 'topleft' 
+        },
+        onAdd: function (map) {
+            var mapUICtlBox = $("#mapUICtl");
+            mapUICtlBox.show();
+            return mapUICtlBox[0];
+        }
+    });
+    // Add it to the map
+    map.addControl(new customTools());
+    mapLoaderFunc.initializeTools();
 
     // Change the marker icon to indicate dragging mode
     mapMarker.on('mousedown', function(e){
@@ -102,6 +115,12 @@ function initializeMap(provider) {
         mapLatLng.lat = e.target.getLatLng().lat;
         mapLatLng.lng = e.target.getLatLng().lng;
         mapMarker.setOpacity(1.0);
+        mapLoaderFunc.enableEdit();
     });
 
+}
+
+function moveMarkerTo(newPos){
+    mapMarker.setLatLng(newPos);
+    map.panTo(newPos);
 }

@@ -41,8 +41,9 @@ function initializeMap() {
             }
         }
     }
+    // Add it to the map
     map.addControl(customTools);
-
+    
     // Show custom tools when the map is ready
     var onComplete = AMap.event.addListener(map, 'complete', function() {
         mapUICtlBox.show();

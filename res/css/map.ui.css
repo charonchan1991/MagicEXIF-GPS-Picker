@@ -122,6 +122,7 @@ html, body {
     font-size: 14px;
     font-style: normal;
     font-weight: normal;
+    line-height: 14px;
     color: #bbb;
     position: absolute;
     z-index: 99;

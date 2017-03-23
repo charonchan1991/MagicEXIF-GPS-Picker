@@ -100,7 +100,7 @@ function loadMapFromProvider(provider, lang){
             if (lang.length == 0) {lang = 'en_RU';}
             prvdrAlias = 'ydx';
             targetLoader = 'res/js/map_loader_yandex.js';
-            targetApiLibr = 'https://api-maps.yandex.ru/2.1/?load=Map,Placemark&onload=initializeMap&lang=' + lang;
+            targetApiLibr = 'https://api-maps.yandex.ru/2.1/?load=Map,Placemark,collection.Item,util.augment&onload=initializeMap&lang=' + lang;
             break;
         case 'osm':
         case 'openstreetmap':
@@ -141,7 +141,7 @@ function loadMapFromProvider(provider, lang){
             mapUICtlBtnRestore.click(cancelEdit);
         }
     }
-
+    
     // Apply new position and update query params
     function applyNewPosition(){
         if(history.pushState && mapPosChanged){
