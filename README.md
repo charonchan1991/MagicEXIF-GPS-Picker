@@ -13,9 +13,10 @@ This ia a GPS coordinates picker webapp for [MagicEXIF](http://www.magicexif.com
 ## Usage
 
 Run in a http server. Try play with the following params:
+
 | param    | required | default  | description |
 | -------- | -------- | -------- | ----------- |
-| agent    | yes      |          | Request origin. Only 'MgExf' and 'ExfNw' is allowed. |
+| agent    | yes      | ''       | Request origin. Only 'MgExf' and 'ExfNw' is allowed. |
 | provider | no       | 'google' | Map service provider. Can be one of the following: ['google', 'google_cn', 'baidu', 'amap', 'yandex', 'osm', 'mapbox', 'carto', 'esri', 'wikimedia']. |
 | lat      | no       | 0        | Default latitude. |
 | lng      | no       | 0        | Default longitude. |
