@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="MagicEXIF map loader and GPS picker">
+    <meta name="keywords" content="EXIF,GPS,geo,metadata,image,photo,photography,photoshop">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="res/css/map.ui.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/miniTip/1.5.3/jquery.miniTip.min.js"></script>
+    <script src="res/js/jquery.query.min.js"></script>
+    </head>
+    <body>
+        <div id="mapUIMsg">地图加载中...</div>
+        <div id="mapUICanvas"></div>
+        <div id="mapUICtl">
+            <div id="mapUICtlConfirm" class="mapUICtlBtn" title="确认修改"></div>
+            <div id="mapUICtlRestore" class="mapUICtlBtn" title="重置"></div>
+        </div>
+        <div id="mapUIFloatingPanel">
+            <div id="mapUICloseAdsBar"><a id="mapUICloseAdsBtn" href="#closeClicked">&#10006;&nbsp;移除广告</a></div>
+            <div id="mapUIAds">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <ins class="adsbygoogle"
+                    style="display:inline-block;width:320px;height:100px"
+                    data-ad-client="ca-pub-9930052386370672"
+                    data-ad-slot="4482676943"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+        <script>
+            $(function() {
+                // Check params and determine if ads should be shown
+                if(Boolean($.query.get('noads'))){
+                    $('#mapUIFloatingPanel').hide();
+                }
+                // disable context menu
+                $('body').bind('contextmenu', function(e) {
+                    e.preventDefault();
+                });
+            }); 
+        </script>
+        <script src="res/js/map_loader.js"></script>
+    </body>
+</html>
