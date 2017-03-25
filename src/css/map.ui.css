@@ -1,0 +1,195 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    right: 0;
+    font-family: 'Roboto','Segoe UI','Microsoft YaHei','Tahoma','sans-serif';
+    overflow-x: hidden; 
+    overflow-y: hidden; 
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#mapUICanvas {
+    height: 100%;
+    background:url('../img/map_bg.png');
+}
+#mapUIMsg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 250px;
+    transform: translate(-50%, -50%);
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 400;
+    color: #ccc;
+    background-color: #eee;
+}
+#mapUIFloatingPanel {
+    -moz-background-clip: border;     /* Firefox 3.6 */
+    -webkit-background-clip: border;  /* Safari 4? Chrome 6? */
+    background-clip: border-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
+    
+    -moz-background-clip: padding;     /* Firefox 3.6 */
+    -webkit-background-clip: padding;  /* Safari 4? Chrome 6? */
+    background-clip: padding-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
+    
+    -moz-background-clip: content;     /* Firefox 3.6 */
+    -webkit-background-clip: content;  /* Safari 4? Chrome 6? */
+    background-clip: content-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
+    
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    z-index: 999;
+    height: 120px;
+    width: 320px;
+    padding: 0;
+    border: 5px solid rgba(0,0,0,.5);
+    border-right: 0;
+    background-color: #eee;
+}
+#mapUICloseAdsBar{
+    height: 20px;
+    font-size: 12px;
+    line-height: 20px;
+    padding-right: 5px;
+    text-align: right;
+}
+#mapUIAds{
+    height: 100px;
+    width: 320px;
+}
+#mapUIAds:after {
+    content: "MagicEXIF";
+    font-size: 20px;
+    font-weight: 500;
+    color: #ddd;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+#mapUICloseAdsBtn{
+    text-decoration: none;
+    color: #666;
+}
+#mapUICloseAdsBtn:hover{
+    color: #333;
+}
+
+
+#mapUICtl{
+    -moz-background-clip: border;     /* Firefox 3.6 */
+    -webkit-background-clip: border;  /* Safari 4? Chrome 6? */
+    background-clip: border-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
+    
+    -moz-background-clip: padding;     /* Firefox 3.6 */
+    -webkit-background-clip: padding;  /* Safari 4? Chrome 6? */
+    background-clip: padding-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
+    
+    -moz-background-clip: content;     /* Firefox 3.6 */
+    -webkit-background-clip: content;  /* Safari 4? Chrome 6? */
+    background-clip: content-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
+
+    margin: 15px;
+    border: 2px solid rgba(0,0,0,.3);
+    border-radius: 5px;
+    background-color: #eee;
+    width: 31px;
+    height: 63px;
+    position: absolute;
+    display: none;
+    cursor: default;
+}
+.mapUICtlBtn{
+    height: 31px;
+    width: 31px;
+}
+.mapUICtlBtn.active{
+    cursor: pointer;
+}
+.mapUICtlBtn:after{
+	font-family: FontAwesome;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 14px;
+    color: #bbb;
+    position: absolute;
+    z-index: 99;
+}
+.mapUICtlBtn.active:after{
+    color: #888;
+}
+.mapUICtlBtn.active:hover:after{
+    color: #fff;
+}
+.mapUICtlBtn.active:active:after{
+    color: #ddd;
+}
+#mapUICtlConfirm{
+    border-radius: 2px 2px 0 0;
+    border-bottom: 1px solid #ccc;
+}
+#mapUICtlConfirm.active:hover{
+    background-color: #7CB342;
+}
+#mapUICtlConfirm.active:active{
+    background-color: #689F38;
+}
+#mapUICtlConfirm:after{
+    content: "\f00c";
+    top: 9px;
+    left: 9px;
+}
+#mapUICtlRestore{
+    border-radius: 0 0 2px 2px;
+}
+#mapUICtlRestore.active:hover{
+    background-color: #0097A7;
+}
+#mapUICtlRestore.active:active{
+    background-color: #00838F;
+}
+#mapUICtlRestore:after{
+    content: "\f0e2";
+    top: 41px;
+    left: 10px;
+}
+
+#miniTip {
+    /* main styles for tooltip */
+    background-color: #333;
+	border: 0;
+	color: #fff;
+	font-size: 12px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+    opacity: 0.8;
+    /* end editing style */
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+    z-index: 9999;
+}
+/* main content style */
+#miniTip_c { padding: 4px 8px }
+/* arrow holder, no need to edit */
+#miniTip_a {
+	width: 0;
+	height: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
