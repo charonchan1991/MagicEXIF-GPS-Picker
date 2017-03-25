@@ -91,6 +91,7 @@ function loadMapFromProvider(provider, lang){
             targetApiLibr = 'https://api.map.baidu.com/api?v=2.0&ak=izDTGnjdI3PrIpxBbno664nhOzgIg5Nw&s=1&callback=initializeMap';
             break;
         case 'amap':
+        case 'gaode':
             prvdrAlias = 'amp';
             targetLoader = 'res/js/map_loader_amap.js';
             targetApiLibr = 'https://webapi.amap.com/maps?v=1.3&key=6405f9ee601bdcbe4182e53cd20e61fa&callback=initializeMap';
