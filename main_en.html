@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="UTF-8">
     <meta name="description" content="MagicEXIF map loader and GPS picker">
@@ -35,7 +35,7 @@
         <script>
             $(function() {
                 // Check params and determine if ads should be shown
-                if(Boolean($.query.get('noads'))){
+                if(!Boolean($.query.get('ads'))){
                     $('#mapUIFloatingPanel').hide();
                 }
                 // disable context menu

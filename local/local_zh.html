@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <style>
+    html {
+        height: 100%;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: 'Roboto','Segoe UI','Microsoft YaHei','Tahoma','sans-serif';
+        background-color: #eee;
+        background-image:url('mgexf_map_bg.png');
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    #mapUIMsg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 250px;
+        transform: translate(-50%, -50%);
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 25px;
+        font-weight: 400;
+        color: #ccc;
+        background-color: #eee;
+    }
+    </style>
+    </head>
+    <body>
+    <div id="mapUIMsg">正在连接服务器...</div>
+    <script>
+        var strParams = window.location.href.split("?")[1];
+        var imgURL = '_map/res/img/map_bg.png';
+        var svrA = 'http://www.magicexif.com/';
+        var svrB = 'http://www.magicexif.cc/';
+        var rndStr = '?cache=' + Math.floor((1 + Math.random()) * 0x10000).toString(16);
+        var isDone = false;
+        var timeout = setTimeout(function(){
+            document.getElementById('mapUIMsg').innerText = '无法连接到服务器';
+        }, 1500);
+        var imgA = new Image();
+        var imgB = new Image();
+        imgA.onload = function(){
+            clearTimeout(timeout);
+            if(!isDone){
+                isDone = true;
+                redirectToMap(svrA);
+            }
+        };
+        imgB.onload = function(){
+            clearTimeout(timeout);
+            if(!isDone){
+                isDone = true;
+                redirectToMap(svrB);
+            }
+        };
+        imgA.src = svrA + imgURL + rndStr;
+        imgB.src = svrB + imgURL + rndStr;
+        function redirectToMap(svrURL){
+            window.location.replace(svrURL + '_map/main_zh.html?' + strParams);
+        } 
+    </script>
+    </body>
+</html>

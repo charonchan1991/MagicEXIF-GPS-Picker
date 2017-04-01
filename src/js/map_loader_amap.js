@@ -17,7 +17,7 @@ function initializeMap() {
 
     var mapMarkerIcon = 'res/img/pin_normal.png';
     var mapMarkerIconDrag = 'res/img/pin_dragging_faded.png';
-    var mapMarkerIconDown = 'res/img/pin_normal_faded.png';
+    //var mapMarkerIconDown = 'res/img/pin_normal_faded.png';
 
     // Add a marker at the center of the map
     mapMarker = new AMap.Marker({
@@ -60,7 +60,8 @@ function initializeMap() {
     // we have to save the point where the user clicks on the marker and fix it in 'dragend'
     var ptClick;
     AMap.event.addListener(mapMarker, 'mousedown', function(e) {
-        mapMarker.setIcon(mapMarkerIconDown);
+        // This is not working properly in IE10/11
+        //mapMarker.setIcon(mapMarkerIconDown);
         var ptMarker = map.lnglatTocontainer(mapMarker.getPosition());
         ptClick = new AMap.Pixel(ptMarker.getX() - e.pixel.getX(), ptMarker.getY() - e.pixel.getY());
         delete ptMarker;

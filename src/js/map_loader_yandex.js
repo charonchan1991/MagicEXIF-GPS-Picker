@@ -70,13 +70,15 @@ function initializeMap() {
 
     // Change the marker icon to indicate dragging mode
     mapMarker.events.add('mousedown', function(e) {
-        mapMarker.options.set('iconImageHref', mapMarkerIconDown);
+        //Not working properly under IE10/11
+        //mapMarker.options.set('iconImageHref', mapMarkerIconDown);
     });
     mapMarker.events.add('dragstart', function(e) {
         mapMarker.options.set('iconImageHref', mapMarkerIconDrag);
     });
     mapMarker.events.add('mouseup', function(e) {
-        mapMarker.options.set('iconImageHref', mapMarkerIcon);
+        //Not working properly under IE10/11
+        //mapMarker.options.set('iconImageHref', mapMarkerIcon);
     });
 
     // Save the new location when the marker's pos changed
