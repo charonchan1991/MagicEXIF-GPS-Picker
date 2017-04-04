@@ -11,6 +11,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/miniTip/1.5.3/jquery.miniTip.min.js"></script>
     <script src="res/js/jquery.query.min.js"></script>
+    <script>
+        $(function() {
+            // Check params and determine if ads should be shown
+            if(!Boolean($.query.get('ads'))){
+                $('#mapUIFloatingPanel').hide();
+            }
+            // disable context menu
+            $('body').bind('contextmenu', function(e) {
+                e.preventDefault();
+            });
+        }); 
+    </script>
     </head>
     <body>
         <div id="mapUIMsg">Map Initializing...</div>
@@ -32,18 +44,6 @@
                 </script>
             </div>
         </div>
-        <script>
-            $(function() {
-                // Check params and determine if ads should be shown
-                if(!Boolean($.query.get('ads'))){
-                    $('#mapUIFloatingPanel').hide();
-                }
-                // disable context menu
-                $('body').bind('contextmenu', function(e) {
-                    e.preventDefault();
-                });
-            }); 
-        </script>
         <script src="res/js/map_loader.js"></script>
     </body>
 </html>

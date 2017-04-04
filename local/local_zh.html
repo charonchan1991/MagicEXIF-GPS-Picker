@@ -21,6 +21,8 @@
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+        overflow-x: hidden; 
+        overflow-y: hidden; 
     }
     #mapUIMsg {
         position: absolute;
@@ -35,41 +37,57 @@
         color: #ccc;
         background-color: #eee;
     }
+    .IE9{
+        left: 25% !important;
+        top: 40% !important;
+    }
     </style>
     </head>
     <body>
     <div id="mapUIMsg">正在连接服务器...</div>
     <script>
         var strParams = window.location.href.split("?")[1];
-        var imgURL = '_map/res/img/map_bg.png';
-        var svrA = 'http://www.magicexif.com/';
-        var svrB = 'http://www.magicexif.cc/';
-        var rndStr = '?cache=' + Math.floor((1 + Math.random()) * 0x10000).toString(16);
-        var isDone = false;
-        var timeout = setTimeout(function(){
-            document.getElementById('mapUIMsg').innerText = '无法连接到服务器';
-        }, 1500);
-        var imgA = new Image();
-        var imgB = new Image();
-        imgA.onload = function(){
-            clearTimeout(timeout);
-            if(!isDone){
+        if (!(document.all && !window.addEventListener)) { // IE9 or older
+            var imgURL = '_map/res/img/map_bg.png';
+            var svrA = 'http://www.magicexif.com/';
+            var svrB = 'http://www.magicexif.cc/';
+            var rndStr = '?cache=' + Math.floor((1 + Math.random()) * 0x10000).toString(16);
+            var isDone = false;
+            var timeout = Number(getQueryStringValue('timeout'));
+            if (timeout == 0) timeout = 2000;
+            var timer = setTimeout(function(){
                 isDone = true;
-                redirectToMap(svrA);
+                document.getElementById('mapUIMsg').innerText = '无法连接到服务器';
+            }, timeout);
+            var imgA = new Image();
+            var imgB = new Image();
+            imgA.onload = function(){
+                clearTimeout(timer);
+                if(!isDone){
+                    isDone = true;
+                    redirectToMap(svrA);
+                }
+            };
+            imgB.onload = function(){
+                clearTimeout(timer);
+                if(!isDone){
+                    isDone = true;
+                    redirectToMap(svrB);
+                }
+            };
+            imgA.src = svrA + imgURL + rndStr;
+            imgB.src = svrB + imgURL + rndStr;
+            function redirectToMap(svrURL){
+                window.location.replace(svrURL + '_map/main_zh.html?' + strParams);
             }
-        };
-        imgB.onload = function(){
-            clearTimeout(timeout);
-            if(!isDone){
-                isDone = true;
-                redirectToMap(svrB);
+            function getQueryStringValue(key) {  
+            return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
             }
-        };
-        imgA.src = svrA + imgURL + rndStr;
-        imgB.src = svrB + imgURL + rndStr;
-        function redirectToMap(svrURL){
-            window.location.replace(svrURL + '_map/main_zh.html?' + strParams);
-        } 
+        } else {
+            var msgDiv = document.getElementById('mapUIMsg');
+            msgDiv.className += " IE9";
+            msgDiv.innerText = 'IE 版本过低';
+        }
     </script>
     </body>
 </html>
