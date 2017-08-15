@@ -21,11 +21,9 @@
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
-        overflow-x: hidden; 
-        overflow-y: hidden; 
     }
     #mapUIMsg {
-        position: absolute;
+        position: fixed;
         top: 50%;
         left: 50%;
         min-width: 250px;
@@ -36,25 +34,91 @@
         font-weight: 400;
         color: #ccc;
         background-color: #eee;
+        z-index: -1;
+    }
+    #staticMap{
+        margin: 0;
+        width: 100%;
+        height: 100%;
+    }
+    #mapUIMarker{
+        position: absolute;
+        margin: 0;
+        top: -100px;
+        left: -100px;
+        z-index: 98;
+    }
+    .toolBar{
+        position: fixed;
+        background-color: #F9EDBE;
+        border: 1px solid #F0C36D;
+        color: #000;
+        font-size: 12px;
+        margin: 5px;
+        -moz-box-shadow: 1px 1px 5px #999;
+        -webkit-box-shadow: 1px 1px 5px #999;
+        box-shadow: 1px 1px 5px #999;
+        height: 15px;
+    }
+    .zoomCtl{
+        width: 10px;
+        font-family: 'Courier New', 'Courier', monospace;
+        font-size: 20px;
+        font-weight: 700;
+        text-decoration: none;
+        padding: 2px 8px 8px 7px;
+        cursor: pointer;
+    }
+    .zoomCtl:hover{
+        background-color: #F0C36D;
+    }
+    #alertBar{
+        left: 72px;
+        padding: 5px 8px;
+        z-index: 99;
+        cursor: default;
+        min-width: 250px;
+        overflow-x: hidden;
+    }
+    #zoomInCtl{
+        left: 0px;
+    }
+    #zoomOutCtl{
+        left: 30px;
     }
     .IE9{
-        left: 25% !important;
+        width: 250px;
+        margin-left: -125px;
         top: 40% !important;
     }
     </style>
     </head>
     <body>
-    <div id="mapUIMsg">正在连接服务器...</div>
+    <!--[if gte IE 7]>
+        <a id="zoomInCtl" class="toolBar zoomCtl" unselectable="on" onclick="zoomIn()">+</a>
+        <a id="zoomOutCtl" class="toolBar zoomCtl" unselectable="on" onclick="zoomOut()">-</a>
+        <div id="alertBar" class="toolBar" unselectable="on">请升级到 IE10 或以上版本以使用动态地图功能</div>
+    <![endif]-->
+    <div id="staticMap">
+        <img id="mapUIMarker" src="mgexf_marker.png" unselectable="on">
+    </div>
+    <div id="mapUIMsg" unselectable="on">正在连接服务器...</div>
+    <script src="http://www.magicexif.com/_map/res/js/map_coord_srvc.js"></script>
     <script>
         var strParams = window.location.href.split("?")[1];
-        if (!(document.all && !window.addEventListener)) { // IE9 or older
+        var timeout = Number(getQueryStringValue('timeout'));
+        var provider = getQueryStringValue('provider');
+        var lat = Number(getQueryStringValue('lat'));
+        var lng = Number(getQueryStringValue('lng'));
+        var zoom = Number(getQueryStringValue('zoom'));
+        var lang = getQueryStringValue('lang');
+        var rndStr = 'cache=' + Math.floor((1 + Math.random()) * 0x10000).toString(16);
+        if (timeout == 0) timeout = 2000;
+        if (!(document.all && !window.atob)) { // IE10 or older
             var imgURL = '_map/res/img/map_bg.png';
             var svrA = 'http://www.magicexif.com/';
             var svrB = 'http://www.magicexif.cc/';
-            var rndStr = '?cache=' + Math.floor((1 + Math.random()) * 0x10000).toString(16);
             var isDone = false;
-            var timeout = Number(getQueryStringValue('timeout'));
-            if (timeout == 0) timeout = 2000;
             var timer = setTimeout(function(){
                 isDone = true;
                 document.getElementById('mapUIMsg').innerText = '无法连接到服务器';
@@ -75,18 +139,133 @@
                     redirectToMap(svrB);
                 }
             };
-            imgA.src = svrA + imgURL + rndStr;
-            imgB.src = svrB + imgURL + rndStr;
+            imgA.src = svrA + imgURL + '?' + rndStr;
+            imgB.src = svrB + imgURL + '?' + rndStr;
             function redirectToMap(svrURL){
                 window.location.replace(svrURL + '_map/main_zh.html?' + strParams);
             }
-            function getQueryStringValue(key) {  
-            return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
-            }
         } else {
             var msgDiv = document.getElementById('mapUIMsg');
-            msgDiv.className += " IE9";
-            msgDiv.innerText = 'IE 版本过低';
+            var img = document.createElement("img");
+            var imgMarker = document.getElementById('mapUIMarker');
+            var isLoaded = false;
+            if (Number(zoom) == 0) zoom = '5';
+            if (document.all && !window.addEventListener){  //IE8 or lower
+                msgDiv.className += " IE9";
+            }
+            msgDiv.innerText = '地图加载中...';
+            var timer = setTimeout(function(){
+                if (!isLoaded) {
+                    msgDiv.innerText = '无法连接到服务器';
+                } else {
+                    msgDiv.innerText = '';
+                }
+            }, timeout);
+            img.onload = function(){
+                msgDiv.style.display = 'none';
+                imgMarker.style.top = (svrData.height / 2 - imgMarker.height) + 'px';
+                imgMarker.style.left = (svrData.width - imgMarker.width) / 2 + 'px';
+                clearTimeout(timer);
+                isLoaded = true;
+            }
+            img.onerror = function(){
+                img.style.display = 'none';
+            }
+            var svrData = getImageFromServer();
+            img.setAttribute("src", svrData.src);
+            img.setAttribute("unselectable", "on");
+            document.getElementById('staticMap').appendChild(img);
+            function getImageFromServer(){
+                switch(provider){
+                case 'baidu':
+                    var bdPos = MapCoordSrvc.wgs2bd(lat, lng);
+                    return {
+                        src: "http://api.map.baidu.com/staticimage/v2?ak=AZVIWbMp9A3NXYcqE7yPueBo&center=" + bdPos.lng + "," + bdPos.lat + "&width=450&height=640&zoom=" + zoom,
+                        width:450, height:640
+                    }
+                case 'amap':
+                case 'gaode':
+                    var ampPos = transformToAmap(lat, lng);
+                    function transformToAmap(lat, lng){
+                        if (MapCoordSrvc.insideChina(lat, lng)){
+                            if (MapCoordSrvc.insideTaiwan(lat, lng)){
+                                return {lat: lat, lng: lng};
+                            } else {
+                                var gcjPos = MapCoordSrvc.wgs2gcj(lat, lng);
+                                return {lat: gcjPos.lat, lng: gcjPos.lng};
+                            }
+                        } else {
+                            return {lat: lat, lng: lng};
+                        }
+                    }
+                    return {
+                        src: "http://restapi.amap.com/v3/staticmap?key=6571817610cd8c9a04b7fea208f3d282&location=" + ampPos.lng + "," + ampPos.lat + "&size=450*640&zoom=" + zoom,
+                        width:450, height:640
+                    }
+                case 'google':
+                case 'google_cn':
+                    var gglPos = transformToGgl(lat, lng);
+                    function transformToGgl(lat, lng){
+                        if (MapCoordSrvc.insideChina(lat, lng)){
+                            if (MapCoordSrvc.insideSAR(lat, lng)||MapCoordSrvc.insideTaiwan(lat, lng)){
+                                return {lat: lat, lng: lng};
+                            } else {
+                                var gcjPos = MapCoordSrvc.wgs2gcj(lat, lng);
+                                return {lat: gcjPos.lat, lng: gcjPos.lng};
+                            }
+                        } else {
+                            return {lat: lat, lng: lng};
+                        }
+                    }
+                    return {
+                        src: (provider == 'google' ? "https://maps.googleapis.com" : "http://maps.google.cn") + "/maps/api/staticmap?key=AIzaSyB4DUevvypCjQ8gsUj846Pyv-3Ys11-XII&sensor=false&center=" + gglPos.lat + "," + gglPos.lng + "&size=450x640&zoom=" + zoom + "&language=" + lang,
+                        width:450, height:640
+                    }
+                case 'yandex':
+                    return {
+                        src: "http://static-maps.yandex.ru/1.x/?l=map&ll=" + lng + ',' + lat + "&z=" + zoom + "&size=450,450" + (lang.length > 0 ? "&lang=" + lang : ""),
+                        width:450, height:450
+                    }
+                case 'mapbox':
+                    return {
+                        src: "https://api.mapbox.com/styles/v1/mapbox/streets-v8/static/" + lng + "," + lat + "," + zoom + ",0,0/450x640?access_token=pk.eyJ1IjoiY2hhcm9uY2hhbjE5OTEiLCJhIjoiY2owZzByNzN0MDJjeTMzcmt5em5jYjhnZyJ9.xP7ewkleFDn1rPbb_83K6A",
+                        width:450, height:640
+                    }
+                case 'osm':
+                case 'openstreetmap':
+                    return {
+                        src: "http://staticmap.openstreetmap.de/staticmap.php?center=" + lat + "," + lng + "&zoom=" + zoom + "&size=450x640",
+                        width:450, height:640
+                    }
+                default:
+                    msgDiv.innerText = '当前服务供应商不支持静态地图';
+                    clearTimeout(timer);
+                    return {src: ""}
+                }
+            }
+        }
+        function getQueryStringValue(key) {  
+            return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
+        }
+        function refreshPage(){
+            var winLoc = window.location;
+            var newUrl = winLoc.protocol + "//" +winLoc.host + winLoc.pathname +
+                                            '?provider=' + provider + 
+                                            '&lat=' + lat +
+                                            '&lng=' + lng +
+                                            '&zoom=' + zoom;
+            if (lang.length > 0) {newUrl+='&lang=' + lang}
+            window.location.replace(newUrl);
+        }
+        function zoomIn(){
+            zoom += 1;
+            if (zoom > (provider == 'baidu' ? 19 : 18)) zoom = (provider == 'baidu' ? 19 : 18);
+            refreshPage();
+        }
+        function zoomOut(){
+            zoom -= 1;
+            if (zoom < 3) zoom = 3;
+            refreshPage();
         }
     </script>
     </body>

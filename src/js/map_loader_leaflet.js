@@ -48,6 +48,18 @@ function initializeMap(provider) {
             attribution: 'Map data & Imagery &copy <a href="http://www.esri.com/" target="_blank">ESRI</a>' + lflString
         }).addTo(map);
         break;
+    case 'google_stl':
+        L.tileLayer('https://maps.googleapis.com/maps/vt?lyrs=s&x={x}&y={y}&z={z}', {
+            maxZoom: 18,
+            attribution: 'Map data & Imagery &copy <a href="http://www.google.com/" target="_blank">Google</a>' + lflString
+        }).addTo(map);
+        break;
+    case 'google_stl_cn':
+        L.tileLayer('http://www.google.cn/maps/vt?lyrs=s&gl=cn&x={x}&y={y}&z={z}', {
+            maxZoom: 18,
+            attribution: 'Map data & Imagery &copy <a href="http://www.google.com/" target="_blank">Google</a>' + lflString
+        }).addTo(map);
+        break;
     case 'google_lfl':
         L.tileLayer('https://maps.googleapis.com/maps/vt?lyrs=m@189&x={x}&y={y}&z={z}', {
             maxZoom: 18,

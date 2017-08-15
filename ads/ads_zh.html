@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="ads display area">
+    <meta name="keywords" content="EXIF,GPS,geo,metadata,image,photo,photography,photoshop">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.12/jquery.bxslider.min.css" rel="stylesheet" />
+    <style>
+        html {height: 100%;}
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Roboto','Segoe UI','Microsoft YaHei','Tahoma','sans-serif';
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            overflow-x: hidden; 
+            overflow-y: hidden; 
+        }
+        .bx-wrapper{
+            border: none;
+        }
+    </style>
+    <body>
+        <ul class="bxslider">
+            <li><a href="#callVldt" onclick="setWindowLocation();"><img src="ad_banner_vldt.png" draggable="false" /></a></li>
+            <li><a href="#http%3A%2F%2Fwww.magicexif.com%2F%23gpstool" onclick="setWindowLocation();"><img src="ad_banner_gpstool.png" draggable="false" /></a></li>
+            <li><a href="#http%3A%2F%2Fwww.magicexif.com%2Fweb%2Fabout.html%23coop" onclick="setWindowLocation();"><img src="ad_banner_biz.png" draggable="false" /></a></li>
+        </ul>
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/ideal-image-slider/1.5.1/extensions/captions/iis-captions.min.js"></script>-->
+        <script>
+            $(document).ready(function(){
+              $('.bxslider').bxSlider({
+                  auto: true,
+                  pause: 5000,
+                  randomStart: true,
+                  controls: false,
+                  pager: false
+              });
+            });
+            $("img,a").mousedown(function(){
+                return false;
+            });
+            function setWindowLocation(){
+                var newUrl = window.parent.location.href;
+                window.history.replaceState({path:newUrl}, '', newUrl);
+            }
+        </script>
+    </body>
+</html>
